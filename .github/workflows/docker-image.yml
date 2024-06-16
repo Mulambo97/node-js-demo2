@@ -30,7 +30,7 @@ jobs:
         run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
 
   # This job build a docker images from the dockerfile in our repo
-  # and push that docker image to Docker Hub. More inof here:
+  # and push that docker image to Docker Hub. More info here:
   # https://github.com/marketplace/actions/build-and-push-docker-images
   deploy-to-dockerhub:
     name: Prod | Deploy to DockerHub
@@ -59,11 +59,10 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           push: true
-          # neisguy/nodejs-backend:tagname
-          # dockerhub username / dockerhub reposiroty : the image tag
+          # dockerhub username / dockerhub repository : the image tag
           tags: ${{ vars.DOCKERHUB_USERNAME }}/node-js-demo:latest
 
-  # Deplopy the docker image to Amazon ECR
+  # Deploy the docker image to Amazon ECR
   deploy-to-ecr:
     name: Prod | Deploy to ECR
     environment: aws
@@ -82,20 +81,28 @@ jobs:
           echo "PullRequest was reviewed, approved, and Merged"
           echo "Prod deployment was reviewed and approved"
 
-      # - name: Configure AWS Credentials
-      #   uses: aws-actions/configure-aws-credentials@v4
-      #   with:
-      #     aws-region: ${{vars.REGION}}
-      #     role-to-assume: ${{vars.IAM_ROLE}}
-      #     role-session-name: deploy-docker-image-to-ecr
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ vars.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ vars.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ vars.AWS_REGION }}
 
-      # - name: Validate IAM role Access
-      #   # list all the repositories in the default registry of your account.
-      #   run: |
-      #     aws ecr describe-repositories
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build, tag, and push image to Amazon ECR
+        run: |
+          # Build Docker image
+          docker build -t ${{ vars.AWS_ACCOUNT_ID }}.dkr.ecr.${{ vars.AWS_REGION }}.amazonaws.com/${{ vars.ECR_REPOSITORY_NAME }}:latest .
+          # Tag Docker image
+          docker tag my-image-name:latest ${{ vars.AWS_ACCOUNT_ID }}.dkr.ecr.${{ vars.AWS_REGION }}.amazonaws.com/${{ vars.ECR_REPOSITORY_NAME }}:latest
+          # Push Docker image to ECR
+          docker push ${{ vars.AWS_ACCOUNT_ID }}.dkr.ecr.${{ vars.AWS_REGION }}.amazonaws.com/${{ vars.ECR_REPOSITORY_NAME }}:latest
 
   # Contributors-Readme-Action is a simple GitHub action to automate contributors
-  # list in README file. Not only contributors, collborators, bots or any user.
+  # list in README file. Not only contributors, collaborators, bots or any user.
   # More info: https://github.com/marketplace/actions/contribute-list
   contributors-readme:
     name: Update Contributors List
