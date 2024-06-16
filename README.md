@@ -1,27 +1,28 @@
-READMEs are the first stop of technical documentation for SCS engineers. 
+READMEs are the first stop of technical documentation for SCS engineers.
 
 A well design readme is like a user manual
 
 It should provide the reader/engineer with enough information to get started on their work, such as:
 
-* An overview of what the repo is about
+- An overview of what the repo is about
 
-* the source code organization
+- the source code organization
 
-* Deployment pipeline details info - How what each of the workflows does 
+- Deployment pipeline details info - How what each of the workflows does
 
-* How the code work / How to use it
+- How the code work / How to use it
 
-* How to contribute to the source code repo
+- How to contribute to the source code repo
 
-* etc.
+- etc.
 
 ## Contribution <a id="contribution"></a>
 
 > [!CAUTION]
-> * This repo has one branch: **main**
-> * **This repo DO NOT allow direct push to main branch.**
-> * *Changes should be made on a feature branch only then merged to main after review and approval*
+>
+> - This repo has one branch: **main**
+> - **This repo DO NOT allow direct push to main branch.**
+> - _Changes should be made on a feature branch only then merged to main after review and approval_
 
 > Contributors:
 
@@ -40,23 +41,23 @@ More info on [how to set up SSH from Source Code management to Local machine](ht
 
 #### Clone Repo & Setup feature Branch
 
-For Windowns → Go to “Git Bash”, Right-click and “Run as Administrator”.<br> 
+For Windowns → Go to “Git Bash”, Right-click and “Run as Administrator”.<br>
 For Mac and Linux → Go to the terminal.<br>
 Run the following commands to clone and create your feature branch:
 
 ```bash
-git clone git@github.com:michael-neis/node-js-demo.git
+git clone git@github.com:Mulambo97/node-js-demo.git
 cd node-js-demo
-git checkout -b feature/yourBranchName
+git checkout -b dev
 ```
 
 > [!IMPORTANT]  
-> Make sure your *feature/* branch name following the naming standard above. 
+> Make sure your _feature/_ branch name following the naming standard above.
 > This is used for automated testing and [validation in CI with GitHub Actions](https://github.com/michael-neis/node-js-demo/actions).
 
-After making the necessary code changes, submited a pull request from your feature branch 
+After making the necessary code changes, submited a pull request from your feature branch
 to main branch for review and approval before shipping the new changes to CD pipeline.
 
 > [!WARNING]  
-> To maintain a clean repo, automatic deletion of feature branches upon PR approval is enable on this repo. 
+> To maintain a clean repo, automatic deletion of feature branches upon PR approval is enable on this repo.
 > Your branches automatically deleted after pull requests are merged into Main branch.
