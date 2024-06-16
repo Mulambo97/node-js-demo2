@@ -37,17 +37,17 @@ It should provide the reader/engineer with enough information to get started on 
         </a>
     </td>
     <td align="center">
-        <a href="https://github.com/YannMjl">
-            <img src="https://avatars.githubusercontent.com/u/28827971?v=4" width="100;" alt="YannMjl"/>
-            <br />
-            <sub><b>Yann Mulonda</b></sub>
-        </a>
-    </td>
-    <td align="center">
         <a href="https://github.com/Mulambo97">
             <img src="https://avatars.githubusercontent.com/u/73206766?v=4" width="100;" alt="Mulambo97"/>
             <br />
             <sub><b>Odon Mulambo</b></sub>
+        </a>
+    </td>
+    <td align="center">
+        <a href="https://github.com/YannMjl">
+            <img src="https://avatars.githubusercontent.com/u/28827971?v=4" width="100;" alt="YannMjl"/>
+            <br />
+            <sub><b>Yann Mulonda</b></sub>
         </a>
     </td></tr>
 </table>
