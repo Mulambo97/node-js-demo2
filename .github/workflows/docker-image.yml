@@ -95,8 +95,8 @@ jobs:
       - name: Build, tag, and push image to Amazon ECR
         run: |
           # Build, tag, and push Docker image to ECR
-          docker build -t ${{ vars.AWS_ACCOUNT_ID }}.dkr.ecr.${{ vars.AWS_REGION }}.amazonaws.com/${{ vars.ECR_REPOSITORY_NAME }}:latest .
-          docker push ${{ vars.AWS_ACCOUNT_ID }}.dkr.ecr.${{ vars.AWS_REGION }}.amazonaws.com/${{ vars.ECR_REPOSITORY_NAME }}:latest
+          docker build -t ${{ vars.AWS_ACCOUNT_ID }}.dkr.ecr.${{ vars.AWS_REGION }}.amazonaws.com/${{ vars.ECR_REPOSITORY_NAME }}/node-js-demo:latest .
+          docker push ${{ vars.AWS_ACCOUNT_ID }}.dkr.ecr.${{ vars.AWS_REGION }}.amazonaws.com/${{ vars.ECR_REPOSITORY_NAME }}/node-js-demo:latest
 
   # Contributors-Readme-Action is a simple GitHub action to automate contributors
   # list in README file. Not only contributors, collaborators, bots or any user.
