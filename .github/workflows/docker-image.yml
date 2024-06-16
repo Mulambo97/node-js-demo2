@@ -94,11 +94,8 @@ jobs:
 
       - name: Build, tag, and push image to Amazon ECR
         run: |
-          # Build Docker image
+          # Build, tag, and push Docker image to ECR
           docker build -t ${{ vars.AWS_ACCOUNT_ID }}.dkr.ecr.${{ vars.AWS_REGION }}.amazonaws.com/${{ vars.ECR_REPOSITORY_NAME }}:latest .
-          # Tag Docker image
-          docker tag my-image-name:latest ${{ vars.AWS_ACCOUNT_ID }}.dkr.ecr.${{ vars.AWS_REGION }}.amazonaws.com/${{ vars.ECR_REPOSITORY_NAME }}:latest
-          # Push Docker image to ECR
           docker push ${{ vars.AWS_ACCOUNT_ID }}.dkr.ecr.${{ vars.AWS_REGION }}.amazonaws.com/${{ vars.ECR_REPOSITORY_NAME }}:latest
 
   # Contributors-Readme-Action is a simple GitHub action to automate contributors
