@@ -6,8 +6,8 @@ on:
       - closed
 
     paths-ignore:
-      - 'README.md'
-  
+      - "README.md"
+
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -24,51 +24,44 @@ jobs:
     if: github.event.pull_request.merged == true
 
     steps:
-    - 
-      name: Check out into Repo
-      uses: actions/checkout@v4
-    - 
-      name: Build the Docker image
-      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+      - name: Check out into Repo
+        uses: actions/checkout@v4
+      - name: Build the Docker image
+        run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
 
   # This job build a docker images from the dockerfile in our repo
-  # and push that docker image to Docker Hub. More inof here: 
+  # and push that docker image to Docker Hub. More inof here:
   # https://github.com/marketplace/actions/build-and-push-docker-images
   deploy-to-dockerhub:
     name: Prod | Deploy to DockerHub
     environment: prod
 
-    # This is the runner aka container/machine where 
+    # This is the runner aka container/machine where
     #our deployment pipeline is going to run.
     runs-on: ubuntu-latest
 
-    # only deploy to prod when test was successful 
+    # only deploy to prod when test was successful
     needs: test-build
-    
+
     steps:
-      - 
-        name: Check out into the repo
+      - name: Check out into the repo
         uses: actions/checkout@v4
-      -
-        name: Set up QEMU
+      - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
-      -
-        name: Set up Docker Buildx
+      - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-      -
-        name: Login to Docker Hub
+      - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ vars.DOCKERHUB_USERNAME }}
           password: ${{ vars.DOCKERHUB_TOKEN }}
-      -
-        name: Build and push
+      - name: Build and push
         uses: docker/build-push-action@v5
         with:
           push: true
           # neisguy/nodejs-backend:tagname
           # dockerhub username / dockerhub reposiroty : the image tag
-          tags: ${{ vars.DOCKERHUB_USERNAME }}/nodejs-backend:latest
+          tags: ${{ vars.DOCKERHUB_USERNAME }}/node-js-demo:latest
 
   # Deplopy the docker image to Amazon ECR
   deploy-to-ecr:
@@ -76,7 +69,7 @@ jobs:
     environment: aws
     runs-on: ubuntu-latest
 
-    # run prod deployment job only if test deployment was 
+    # run prod deployment job only if test deployment was
     # successful
     needs: test-build
 
@@ -88,7 +81,7 @@ jobs:
         run: |
           echo "PullRequest was reviewed, approved, and Merged"
           echo "Prod deployment was reviewed and approved"
-        
+
       # - name: Configure AWS Credentials
       #   uses: aws-actions/configure-aws-credentials@v4
       #   with:
@@ -111,7 +104,7 @@ jobs:
     # update contributor list when new code was
     # successful validated, scanned and deployed to prod
     needs: deploy-to-dockerhub
-    
+
     steps:
       - name: Contribute List
         uses: akhilmhdh/contributors-readme-action@v2.3.8
