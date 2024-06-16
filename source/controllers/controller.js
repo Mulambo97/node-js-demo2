@@ -1,29 +1,46 @@
-// ****************************************************************
-// Controller functions to get the requested data from the models, 
-// create an HTML page displaying the data, and return it to the 
-// user to view in the browser.
-// ****************************************************************
-
 import path from 'path';
-import { getPeople, createPerson, updatePerson } from '../models/models.js';
 import dotenv from 'dotenv';
+import { MongoClient, ServerApiVersion } from 'mongodb';
 
 dotenv.config();
+
+const user = process.env.USER;
+const password = process.env.PASSWORD;
+const cluster_uri = process.env.CLUSTER_URI;
+
+console.log('User:', user);
+console.log('Password:', password);
+console.log('Cluster URI:', cluster_uri);
+
+const url = `mongodb+srv://${user}:${password}@${cluster_uri}.rshysdh.mongodb.net/?retryWrites=true&w=majority&appName=nodejsdemo`;
+console.log(url);
+
+const client = new MongoClient(url, {
+    serverApi: {
+      version: ServerApiVersion.v1,
+      strict: true,
+      deprecationErrors: true,
+    }
+});
+
 const __dirname = path.resolve();
-// show html page
+
+// Show html page
 export const home = (req, res) => {
     res.sendFile(__dirname + "/source/pages/home.html");
-}
-// get and show today's date
+};
+
+// Get and show today's date
 export const getTodayDate = (req, res) => {
     const dateObj = new Date();
-    const month = dateObj.getUTCMonth() + 1; // months from 1-12
+    const month = dateObj.getUTCMonth() + 1;
     const day = dateObj.getUTCDate();
     const year = dateObj.getUTCFullYear();
-    const newdate = `${day}/${month}/${year}`;
+    const newdate = day + "/" + month + "/" + year;
     res.json({ today: newdate });
-}
-// get list of month names
+};
+
+// Get list of month names
 export const getMonthsName = (req, res) => {
     res.json({
         1: 'January',
@@ -39,11 +56,10 @@ export const getMonthsName = (req, res) => {
         11: 'November',
         12: 'December'
     });
-}
+};
 
-// get list of people -- This can come from a database and what's defined in model.js
-// but for the purspuse of this demo, I'm going o juts type a couple of names
-export const getPeoples = (req, res) => {
+// Get list of people
+export const getPeople = (req, res) => {
     res.json([
         {
             FirstName: 'Yann',
@@ -65,33 +81,95 @@ export const getPeoples = (req, res) => {
         },
         {
             FirstName: 'David',
-            LastName: 'Braum',
+            LastName: 'Braun',
             title: 'Full Stack Developer',
             LinkedIn: 'https://www.linkedin.com/in/gloire-kafwalubi-3152871a0/'
         }
     ]);
-}
+};
 
-// create new person
-export const createPersonHandler = async (req, res) => {
-    const newPerson = {
-        FirstName: "Mitch",
-        LastName: "McKenzie",
-        Title: "Data Analyst",
-        LinkedIn: "https://www.linkedin.com/in/mitch-mckenzie/"
-    }
-    const result = await createPerson(newPerson);
-    res.json(result);
-}
-// get list of people from DB
+// Get list of people from the database
 export const getPeopleFromDatabase = async (req, res) => {
-    const peopleResults = await getPeople();
-    res.json(peopleResults);
-}
-// update person
-export const updatePersonHandler = async (req, res) => {
-    const filter = { FirstName: "Michael" };
-    const update = { Title: "Software Developer", Employed: false };
-    const result = await updatePerson(filter, update);
-    res.json(result);
-}
+    const dbName = "nodejsdemo";
+    const collectionName = "people";
+    let peopleResults;
+    try {
+        await client.connect();
+        await client.db("admin").command({ ping: 1 });
+        console.log("Connected successfully to server");
+
+        const database = client.db(dbName);
+        const collection = database.collection(collectionName);
+        try {
+            const peopleCursor = await collection.find();
+            peopleResults = await peopleCursor.toArray();
+        } catch (err) {
+            console.error(`Something went wrong trying to fetch the documents: ${err}`);
+        }
+    } catch (err) {
+        console.error(`Something went wrong connecting to the server: ${err}`);
+    } finally {
+        await client.close();
+    }
+    console.log(peopleResults);
+    return res.json(peopleResults);
+};
+
+export const createPerson = async (req, res) => {
+    const dbName = "nodejsdemo";
+    const collectionName = "people";
+    let addedPerson;
+    try {
+        await client.connect();
+        await client.db("admin").command({ ping: 1 });
+        console.log("Connected successfully to server");
+
+        const database = client.db(dbName);
+        const collection = database.collection(collectionName);
+        try {
+            const newPerson = {
+                FirstName: "Mitch",
+                LastName: "McKenzie",
+                Title: "Data Analyst"
+            };
+            const result = await collection.insertOne(newPerson);
+            console.log(`New listing created with the following id: ${result.insertedId}`);
+        } catch (err) {
+            console.error(`Something went wrong trying to insert the new document: ${err}`);
+        }
+    } catch (err) {
+        console.error(`Something went wrong connecting to the server: ${err}`);
+    } finally {
+        await client.close();
+    }
+    return res.json(addedPerson);
+};
+
+export const updatePerson = async (req, res) => {
+    const dbName = "nodejsdemo";
+    const collectionName = "people";
+    let updatedPerson;
+    try {
+        await client.connect();
+        await client.db("admin").command({ ping: 1 });
+        console.log("Connected successfully to server");
+
+        const database = client.db(dbName);
+        const collection = database.collection(collectionName);
+        try {
+            updatedPerson = await collection.updateOne(
+                { FirstName: "Michael" },
+                { $set: { Title: "Software Developer", Employed: false } }
+            );
+            console.log(`${updatedPerson.matchedCount} document(s) matched the query criteria.`);
+            console.log(`${updatedPerson.modifiedCount} document(s) updated.`);
+        } catch (err) {
+            console.error(`Something went wrong trying to update the document: ${err}`);
+        }
+    } catch (err) {
+        console.error(`Something went wrong connecting to the server: ${err}`);
+    } finally {
+        await client.close();
+    }
+    return res.json(updatedPerson);
+};
