@@ -20,7 +20,7 @@ jobs:
     environment: test
     runs-on: ubuntu-latest
 
-    # run this job only when PR is approved
+    # run this job only when Pull Request is approved
     if: github.event.pull_request.merged == true
 
     steps:
