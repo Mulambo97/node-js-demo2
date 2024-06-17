@@ -30,17 +30,17 @@ It should provide the reader/engineer with enough information to get started on 
 <table>
 <tr>
     <td align="center">
-        <a href="https://github.com/michael-neis">
-            <img src="https://avatars.githubusercontent.com/u/90716315?v=4" width="100;" alt="michael-neis"/>
-            <br />
-            <sub><b>Michael Neis</b></sub>
-        </a>
-    </td>
-    <td align="center">
         <a href="https://github.com/Mulambo97">
             <img src="https://avatars.githubusercontent.com/u/73206766?v=4" width="100;" alt="Mulambo97"/>
             <br />
             <sub><b>Odon Mulambo</b></sub>
+        </a>
+    </td>
+    <td align="center">
+        <a href="https://github.com/michael-neis">
+            <img src="https://avatars.githubusercontent.com/u/90716315?v=4" width="100;" alt="michael-neis"/>
+            <br />
+            <sub><b>Michael Neis</b></sub>
         </a>
     </td>
     <td align="center">
