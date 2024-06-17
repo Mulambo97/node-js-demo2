@@ -8,10 +8,6 @@ const user = process.env.USER;
 const password = process.env.PASSWORD;
 const cluster_uri = process.env.CLUSTER_URI;
 
-console.log('User:', user);
-console.log('Password:', password);
-console.log('Cluster URI:', cluster_uri);
-
 const url = `mongodb+srv://${user}:${password}@${cluster_uri}.rshysdh.mongodb.net/?retryWrites=true&w=majority&appName=nodejsdemo`;
 console.log(url);
 
@@ -64,26 +60,26 @@ export const getPeople = (req, res) => {
         {
             FirstName: 'Yann',
             LastName: 'Mulonda',
-            title: 'Software Engineer',
+            Title: 'Software Engineer',
             LinkedIn: 'https://www.linkedin.com/in/yannmjl/'
         },
         {
             FirstName: 'Michael',
             LastName: 'Neis',
-            title: 'Software Developer',
-            LinkedIn: 'https://www.linkedin.com/in/bernard-ngandu/'
+            Title: 'Software Developer',
+            LinkedIn: 'https://www.linkedin.com/in/michael-neis/'
         },
         {
             FirstName: 'Odon',
             LastName: 'Mulambo',
-            title: 'Software Developer',
-            LinkedIn: 'https://www.linkedin.com/in/clerc-ngonga-b1253b174/'
+            Title: 'Software Developer',
+            LinkedIn: 'https://www.linkedin.com/in/odon-mulambo-8764081a9/'
         },
         {
             FirstName: 'David',
             LastName: 'Braun',
-            title: 'Full Stack Developer',
-            LinkedIn: 'https://www.linkedin.com/in/gloire-kafwalubi-3152871a0/'
+            Title: 'Full Stack Developer',
+            LinkedIn: 'https://www.linkedin.com/in/david-braun777/'
         }
     ]);
 };
@@ -111,8 +107,11 @@ export const getPeopleFromDatabase = async (req, res) => {
     } finally {
         await client.close();
     }
-    console.log(peopleResults);
-    return res.json(peopleResults);
+
+    const trainers = peopleResults.filter(person => person.Role === 'trainer');
+    const trainees = peopleResults.filter(person => person.Role === 'trainee');
+
+    return res.json({ trainers, trainees });
 };
 
 export const createPerson = async (req, res) => {
@@ -128,9 +127,11 @@ export const createPerson = async (req, res) => {
         const collection = database.collection(collectionName);
         try {
             const newPerson = {
-                FirstName: "Mitch",
-                LastName: "McKenzie",
-                Title: "Data Analyst"
+                FirstName: 'David',
+                LastName: 'Braun',
+                Title: 'Full Stack Developer',
+                LinkedIn: 'https://www.linkedin.com/in/david-braun777/',
+                Role: 'trainee'
             };
             const result = await collection.insertOne(newPerson);
             console.log(`New listing created with the following id: ${result.insertedId}`);
