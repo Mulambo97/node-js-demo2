@@ -21,5 +21,5 @@ RUN npm install -g npm-check-updates \
 RUN npm ci --only=production
 # Bundle app source
 COPY . /app
-EXPOSE 3000
+EXPOSE 8080
 CMD [ "babel-node", "app.js" ]
