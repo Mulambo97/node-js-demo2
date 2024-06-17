@@ -27,7 +27,7 @@ jobs:
       - name: Check out into Repo
         uses: actions/checkout@v4
       - name: Build the Docker image
-        run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+        run: docker build . --file Dockerfile --tag my-image-name:$(date +%s) --build-arg USER=${{ vars.USER }} --build-arg PASSWORD=${{ vars.PASSWORD }} --build-arg CLUSTER_URI=${{ vars.CLUSTER_URI }}
 
   # This job build a docker images from the dockerfile in our repo
   # and push that docker image to Docker Hub. More info here:
