@@ -8,10 +8,6 @@ const user = process.env.USER;
 const password = process.env.PASSWORD;
 const cluster_uri = process.env.CLUSTER_URI;
 
-console.log('User:', user);
-console.log('Password:', password);
-console.log('Cluster URI:', cluster_uri);
-
 const url = `mongodb+srv://${user}:${password}@${cluster_uri}.rshysdh.mongodb.net/?retryWrites=true&w=majority&appName=nodejsdemo`;
 console.log(url);
 
@@ -112,8 +108,8 @@ export const getPeopleFromDatabase = async (req, res) => {
         await client.close();
     }
 
-    const trainers = peopleResults.filter(person => person.role === 'trainer');
-    const trainees = peopleResults.filter(person => person.role === 'trainee');
+    const trainers = peopleResults.filter(person => person.Role === 'trainer');
+    const trainees = peopleResults.filter(person => person.Role === 'trainee');
 
     return res.json({ trainers, trainees });
 };
