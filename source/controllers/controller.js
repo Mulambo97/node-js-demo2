@@ -8,7 +8,7 @@ const user = process.env.USER;
 const password = process.env.PASSWORD;
 const cluster_uri = process.env.CLUSTER_URI;
 
-const url = `mongodb+srv://${user}:${password}@${cluster_uri}.rshysdh.mongodb.net/?retryWrites=true&w=majority&appName=nodejsdemo`;
+const url = `mongodb+srv://${user}:${password}@${cluster_uri}.dixbv6w.mongodb.net/?retryWrites=true&w=majority&appName=nodejsdemo`;
 console.log(url);
 
 const client = new MongoClient(url, {
@@ -127,11 +127,11 @@ export const createPerson = async (req, res) => {
         const collection = database.collection(collectionName);
         try {
             const newPerson = {
-                FirstName: 'David',
-                LastName: 'Braun',
-                Title: 'Full Stack Developer',
-                LinkedIn: 'https://www.linkedin.com/in/david-braun777/',
-                Role: 'trainee'
+                FirstName: 'Yann',
+                LastName: 'Mulonda',
+                Title: 'Software Engineer',
+                LinkedIn: 'https://www.linkedin.com/in/yannmjl/',
+                Role: 'trainer'
             };
             const result = await collection.insertOne(newPerson);
             console.log(`New listing created with the following id: ${result.insertedId}`);

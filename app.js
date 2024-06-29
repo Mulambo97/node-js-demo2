@@ -1,5 +1,6 @@
 import express from 'express';
 import routes from './source/routes/routes.js';
+import cors from 'cors';
 
 
 // variable
@@ -7,7 +8,8 @@ const app = express();
 const PORT = 8080;
 const HOST = '0.0.0.0';
 
-// app.use(cors());
+// Enable CORS for all routes
+app.use(cors());
 
 //body parses
 //create Javascrip array from req parses
